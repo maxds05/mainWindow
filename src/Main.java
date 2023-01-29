@@ -1,5 +1,3 @@
-package com.company;
-
 import javax.swing.*;
 
 public class Main {
@@ -8,6 +6,13 @@ public class Main {
 
         JFrame frame = new JFrame("MY COOL WINDOW");
         MainWindow mainWindow = new MainWindow();
+        frame.setContentPane(mainWindow.mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
+        CinemaDB db = new CinemaDB();
+
 
 
         logIn();
