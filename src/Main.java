@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame("MY COOL WINDOW");
+        JFrame frame = new JFrame("MAIN MENU");
         MainWindow mainWindow = new MainWindow();
         frame.setContentPane(mainWindow.mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -73,11 +73,9 @@ public class LoginForm extends JDialog {
 
                 try {
                     Connection con = CinemaDB.getConnection();
-                    PreparedStatement pst;
-
                     Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 
-                    pst = con.prepareStatement("INSERT INTO Users(Email,Password) VALUES (?,?,?)");
+                    PreparedStatement pst = con.prepareStatement("INSERT INTO Users(Email,Password) VALUES (?,?)");
                     pst.setString(1, email);
                     pst.setString(2, password);
                     pst.executeUpdate();

@@ -3,8 +3,8 @@ import java.sql.*;
 public class CinemaDB {
 
 
-     private final String dbFilePath = "CinemaDatabase.accdb";
-     private final String dbConnectionUrl = "jdbc:ucanaccess://" + dbFilePath;
+     private static final String dbFilePath = System.getProperty("user.dir") + "src/CinemaDatabase.accdb";
+     private static final String dbConnectionUrl = "jdbc:ucanaccess://" + dbFilePath;
 
      private Connection dbConnection = null;
 
