@@ -3,10 +3,7 @@ import java.sql.*;
 public class CinemaDB {
 
 
-     private static final String dbFilePath = System.getProperty("user.dir") + "src/CinemaDatabase.accdb";
-     private static final String dbConnectionUrl = "jdbc:ucanaccess://" + dbFilePath;
-
-     private Connection dbConnection = null;
+     private static final String dbFilePath = System.getProperty("user.dir") + "\\src\\CinemaDatabase.accdb";
 
 
      //private variables
@@ -18,46 +15,29 @@ public class CinemaDB {
      private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?,email= ?, WHERE id = ?;";
 
 
-     private Statement getSqlStatement() throws SQLException {
-
-          if (dbConnection == null) {
-               dbConnection = DriverManager.getConnection(dbConnectionUrl, "", ""); //connects to database
-          }
-
-          return dbConnection.createStatement();
-
-     }
-
      public static Connection getConnection() throws SQLException {
-          return DriverManager.getConnection("jdbc:ucanaccess://CinemaDatabase.accdb");
+          return DriverManager.getConnection("jdbc:ucanaccess://" + dbFilePath);
      }
 
      private boolean executeUpdateSql(String query) {
           try {
-               Statement stmt = getSqlStatement();
+               Connection connection = DriverManager.getConnection("jdbc:ucanaccess://" + dbFilePath);
+               Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                stmt.executeUpdate(query);
                stmt.close();
+               connection.close();
           } catch (SQLException e) {
                e.printStackTrace();
                return false;
           }
-
           return true;
-
      }
 
      public static void getFilms() {
-
           try {
-               Class.forName("org.apache.derby.jdbc.ClientDriver");
-          } catch (ClassNotFoundException e) {
-               System.out.println("Class not found " + e);
-          }
-          try {
-               Connection con = DriverManager.getConnection(
-                       "jdbc:ucanaccess://CinemaDatabase.accdb", "username", "password");
+               Connection connection = DriverManager.getConnection("jdbc:ucanaccess://" + dbFilePath);
 
-               Statement stmt = con.createStatement();
+               Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                ResultSet rs = stmt.executeQuery("SELECT * FROM Film");
                System.out.println("Film     Genre    Age Rating");
 
@@ -67,18 +47,14 @@ public class CinemaDB {
                     int ageRating = rs.getInt("AgeRating");
                     System.out.println(filmName + "   " + genre + "    " + ageRating);
                }
+               rs.close();
+               stmt.close();
+               connection.close();
           } catch (SQLException e) {
                System.out.println("SQL exception occurred" + e);
           }
      }
 
-
-     public static void addUser() throws SQLException {
-
-          //String sql = "INSERT INTO Login (Email, Password) VALUES " + "('maxdewarsmith@gmail.com', 'password')";
-
-
-     }
 }
 
 

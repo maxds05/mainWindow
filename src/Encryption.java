@@ -1,34 +1,34 @@
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 public class Encryption {
 
-    public static void hashFunction(String args[]) throws Exception {
+    public static String hashFunction(String str) throws Exception {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] digest = md.digest(str.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(digest);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-    //Scanner sc = new Scanner(System.in);
-
-    //String message = sc.nextLine();
-
-    //Creating the MessageDigest object
-    MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-    //Passing data to the created MessageDigest Object
-    //md.update(message.getBytes());
-
-    //Compute the message digest
-    byte[] digest = md.digest();
-    System.out.println(digest);
-
-    //Converting the byte array in to HexString format
-    StringBuffer hexString = new StringBuffer();
-
-    for (int i = 0;i<digest.length;i++) {
-        hexString.append(Integer.toHexString(0xFF & digest[i]));
     }
-    System.out.println("Hex format : " + hexString.toString());
-}
 
+    private static String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
 
-
+    }
 
 
 }

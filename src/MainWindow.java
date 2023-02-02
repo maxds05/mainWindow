@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class MainWindow {
     public JButton logInSignUpButton;
-    public JButton FilmsButton;
+    public JButton bookNowButton;
     public JPanel mainPanel;
     private JButton info;
     private JButton membershipButton;
@@ -14,7 +14,7 @@ public class MainWindow {
     public MainWindow() {
 
         //View films button
-        FilmsButton.addActionListener(new ActionListener() {
+        bookNowButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CinemaDB db = new CinemaDB();
@@ -68,6 +68,16 @@ public class MainWindow {
                 LoginForm loginForm = new LoginForm();
                 loginForm.pack();
                 loginForm.show();
+            }
+        });
+        bookNowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BookingForm bookingForm = new BookingForm();
+                bookingForm.pack(); // makes the frame fit around it's contents
+                bookingForm.setLocationRelativeTo(null); // makes the frame go to the middle of the screen
+                bookingForm.show();
+
             }
         });
     }

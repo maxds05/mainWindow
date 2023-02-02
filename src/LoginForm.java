@@ -25,6 +25,18 @@ public class LoginForm extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                Encryption encrypt = new Encryption();
+                String email = null;
+                String password = null;
+
+                try {
+                    email = encrypt.hashFunction(emailField.getText())  ;
+                    password = encrypt.hashFunction(String.valueOf(passwordField.getPassword()));
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+
                 if (emailField.getText().isBlank() || passwordField.getPassword().length==0) {
                     JOptionPane.showMessageDialog(null, "Email or password field is empty");
                     return;
@@ -35,9 +47,9 @@ public class LoginForm extends JDialog {
                     PreparedStatement pst;
                     ResultSet rs;
 
-                    Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-                    pst = con.prepareStatement("SELECT * FROM Users WHERE Email='"+emailField.getText() +"' AND Password='"+passwordField.getText() +"' ");
+                    pst = con.prepareStatement("SELECT * FROM Users WHERE Email='"+email +"' AND Password='"+password +"' ");
                     rs=pst.executeQuery();
+
                     if(rs.next()) {
                         JOptionPane.showMessageDialog(null,"Login successful");
                     }
@@ -45,7 +57,11 @@ public class LoginForm extends JDialog {
                         JOptionPane.showMessageDialog(null,"User does not exist, please re-enter details or create an account");
                     }
 
-                } catch (SQLException | ClassNotFoundException exception) {
+                    rs.close();
+                    pst.close();
+                    con.close();
+
+                } catch (SQLException exception) {
                     exception.printStackTrace();
                 }
             }
@@ -68,22 +84,21 @@ public class LoginForm extends JDialog {
                     return;
                 }
 
-               String email =  emailField.getText();
-               String password = String.valueOf(passwordField.getPassword());
+
+                Encryption encrypt = new Encryption();
+                String email = null;
+                String password = null;
 
                 try {
-                    Connection con = CinemaDB.getConnection();
-                    Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+                    email = encrypt.hashFunction(emailField.getText())  ;
+                    password = encrypt.hashFunction(String.valueOf(passwordField.getPassword()));
 
-                    PreparedStatement pst = con.prepareStatement("INSERT INTO Users(Email,Password) VALUES (?,?)");
-                    pst.setString(1, email);
-                    pst.setString(2, password);
-                    pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Account Created");
-
-                } catch (SQLException | ClassNotFoundException exception) {
+                } catch (Exception exception) {
                     exception.printStackTrace();
                 }
+
+
+
                 //System.out.println(email);
                 //System.out.println(password);
             }
@@ -96,9 +111,9 @@ public class LoginForm extends JDialog {
                     Connection con = CinemaDB.getConnection();
                     PreparedStatement pst;
 
-                    pst = con.prepareStatement("UPDATE Users SET name = ?,email= ?, WHERE id = ?;");
-                    //
-                    pst.executeUpdate();
+
+
+
                     JOptionPane.showMessageDialog(null, "Password updated");
 
                 } catch (SQLException exception) {

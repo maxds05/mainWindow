@@ -12,6 +12,7 @@ public class Main {
         frame.setVisible(true);
 
         CinemaDB db = new CinemaDB();
+        db.getFilms();
 
 
 
